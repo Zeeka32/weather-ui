@@ -1,6 +1,9 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap");
+
 
 :root {
+  font-family: "DM Sans", sans-serif;
   --background: hsl(243, 96%, 9%);
   --foreground: #171717;  
   --neutral_900: hsl(243, 96%, 9%);
@@ -13,20 +16,14 @@
   --orange_500: hsl(28, 100%, 52%);
   --blue_500: hsl(233, 67%, 56%);
   --blue-700: hsl(248, 70%, 36%);
+  --font-body: "DM Sans", sans-serif;
+  --font-display: "Bricolage Grotesque", sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: "DM Sans", "Bricolage Grotesque", Helvetica, sans-serif;
-  margin: 0px 100px  0px 100px;
-  padding-top: 55px;
 
-}
-
-@media (max-width: 768px) {
-  body {
-    margin: 0px 20px 0px 20px;
-    padding-top: 30px;
-  }
+  width: 100%;
 }

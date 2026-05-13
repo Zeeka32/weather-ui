@@ -5,14 +5,29 @@
   background-color: var(--neutral_600);
   color: white;
   padding: 16px;
-  width: 200px;
+  width: 185px;
   height: 120px;
   border-radius: 14px;
+}
+@media (max-width: 1024px) {
+  .info-card-main {
+    width: 100%;
+  }
 }
 .info-card-main .info-card-header {
   font-size: 16px;
   font-weight: 500;
 }
+@media (max-width: 1024px) {
+  .info-card-main .info-card-header {
+    font-size: 14px;
+  }
+}
 .info-card-main .info-card-value {
   font-size: 32px;
+}
+@media (max-width: 1024px) {
+  .info-card-main .info-card-value {
+    font-size: 24px;
+  }
 }/*# sourceMappingURL=infoCard.module.css.map */
