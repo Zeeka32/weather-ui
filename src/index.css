@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+:root {
+  --background: hsl(243, 96%, 9%);
+  --foreground: #171717;  
+  --neutral_900: hsl(243, 96%, 9%);
+  --neutral_800: hsl(243, 27%, 20%);
+  --neutral_700: hsl(243, 23%, 24%);
+  --neutral_600: hsl(243, 23%, 30%);
+  --neutral_300: hsl(240, 6%, 70%);
+  --neutral_200: hsl(250, 6%, 84%);
+  --neutral_0: hsl(0, 0%, 100%);
+  --orange_500: hsl(28, 100%, 52%);
+  --blue_500: hsl(233, 67%, 56%);
+  --blue-700: hsl(248, 70%, 36%);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "DM Sans", "Bricolage Grotesque", Helvetica, sans-serif;
+  margin: 0px 100px  0px 100px;
+  padding-top: 55px;
+
+}
+
+@media (max-width: 768px) {
+  body {
+    margin: 0px 20px 0px 20px;
+    padding-top: 30px;
+  }
+}

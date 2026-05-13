@@ -1,0 +1,15 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header img {
+  width: 200px;
+  height: 50px;
+}
+@media (max-width: 768px) {
+  .header img {
+    width: 150px;
+    height: 50px;
+  }
+}/*# sourceMappingURL=header.module.css.map */
