@@ -4,7 +4,15 @@ import { useState } from "react";
 
 type UnitValue = "celsius" | "fahrenheit" | "kmh" | "mph" | "mm" | "in";
 
-export function UnitsDropdown() {
+import type { Placement } from "react-aria-components";
+
+type UnitsDropdownProps = {
+  placement?: Placement;
+};
+
+export function UnitsDropdown({
+  placement = "bottom start",
+}: UnitsDropdownProps) {
   const [temperature, setTemperature] = useState<UnitValue>("celsius");
   const [windSpeed, setWindSpeed] = useState<UnitValue>("kmh");
   const [precipitation, setPrecipitation] = useState<UnitValue>("mm");
@@ -19,7 +27,7 @@ export function UnitsDropdown() {
 
       <Popover
         offset={8}
-        placement="top right"
+        placement={placement}
         className="z-50 w-56 rounded-lg border border-white/10 bg-[#2d1f49] p-1 text-white shadow-xl outline-none"
       >
         <Dialog className="outline-none">

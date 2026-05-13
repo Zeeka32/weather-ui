@@ -1,0 +1,18 @@
+.info-card-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--neutral_600);
+  color: white;
+  padding: 16px;
+  width: 200px;
+  height: 120px;
+  border-radius: 14px;
+}
+.info-card-main .info-card-header {
+  font-size: 16px;
+  font-weight: 500;
+}
+.info-card-main .info-card-value {
+  font-size: 32px;
+}/*# sourceMappingURL=infoCard.module.css.map */

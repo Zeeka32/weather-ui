@@ -1,0 +1,84 @@
+.today-card-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-image: url("/assets/images/bg-today-large.svg");
+  padding: 0 20px 0 20px;
+  width: 800px;
+  height: 280px;
+  border-radius: 20px;
+}
+@media (max-width: 1024px) {
+  .today-card-main {
+    width: 600px;
+    height: 220px;
+    padding: 20px;
+  }
+}
+@media (max-width: 720px) {
+  .today-card-main {
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    padding: 20px;
+  }
+}
+@media (max-width: 375px) {
+  .today-card-main {
+    background-image: url("/assets/images/bg-today-small.svg");
+  }
+}
+.today-card-main .today-card-left .today-card-header {
+  font-size: 24px;
+  font-weight: 600;
+  color: #fff;
+}
+@media (max-width: 1024px) {
+  .today-card-main .today-card-left .today-card-header {
+    font-size: 20px;
+  }
+}
+.today-card-main .today-card-left .today-card-body {
+  font-size: 14px;
+  color: #fff;
+}
+@media (max-width: 1024px) {
+  .today-card-main .today-card-left .today-card-body {
+    font-size: 12px;
+  }
+}
+.today-card-main .today-card-right {
+  display: flex;
+  align-items: center;
+}
+.today-card-main .today-card-right img {
+  width: 85px;
+  height: 85px;
+}
+@media (max-width: 1024px) {
+  .today-card-main .today-card-right img {
+    width: 70px;
+    height: 70px;
+  }
+}
+.today-card-main .today-card-right .today-card-temp {
+  font-size: 75px;
+  font-style: italic;
+  font-weight: 600;
+  color: #fff;
+}
+@media (max-width: 1024px) {
+  .today-card-main .today-card-right .today-card-temp {
+    font-size: 60px;
+  }
+}
+@media (max-width: 768px) {
+  .today-card-main .today-card-right .today-card-temp {
+    font-size: 50px;
+  }
+}
+@media (max-width: 375px) {
+  .today-card-main .today-card-right .today-card-temp {
+    font-size: 40px;
+  }
+}/*# sourceMappingURL=todayCard.module.css.map */
