@@ -1,0 +1,62 @@
+.select {
+  width: 100%;
+  max-width: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  color: white;
+  font-size: 14px;
+}
+
+.button {
+  width: 100%;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 0 12px;
+  background: #2d1f49;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  cursor: pointer;
+}
+
+.icon {
+  font-size: 18px;
+  opacity: 0.8;
+}
+
+.popover {
+  width: var(--trigger-width);
+  background: #2d1f49;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  color: white;
+  overflow: hidden;
+}
+
+.list-box {
+  padding: 6px;
+  outline: none;
+}
+
+.item {
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  outline: none;
+}
+
+.item[data-focused] {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.item[data-selected] {
+  background: rgba(255, 255, 255, 0.16);
+}

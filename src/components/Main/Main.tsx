@@ -1,5 +1,6 @@
 import { SearchComboBox } from "../ui/ComboBox/ComboBox";
 import FutureCard from "../ui/FutureCard/FutureCard";
+import HourlyForecast from "../ui/HourlyForecast/HourlyForecast";
 import InfoCard from "../ui/InfoCard/InfoCard";
 import TodayCard from "../ui/TodayCard/TodayCard";
 import classes from "./main.module.css";
@@ -45,7 +46,9 @@ function Main() {
             <FutureCard text="Sun" low={9} high={17} weatherType="sunny" />
           </div>
         </div>
-        <div className={classes["content-right"]}>test</div>
+        <div className={classes["content-right"]}>
+          <HourlyForecast />
+        </div>
       </div>
     </div>
   );

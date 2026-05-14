@@ -1,0 +1,30 @@
+.hourly-forecast-main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: var(--neutral_600);
+  border-radius: 12px;
+  overflow-y: auto;
+  max-height: 750px;
+}
+.hourly-forecast-main .hourly-forecast-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  background-color: var(--neutral_600);
+  padding: 24px 20px;
+}
+.hourly-forecast-main .hourly-forecast-header .hourly-forecast-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--neutral_0);
+}
+.hourly-forecast-main .hourly-forecast-cards {
+  padding: 12px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}/*# sourceMappingURL=hourlyForecast.module.css.map */
