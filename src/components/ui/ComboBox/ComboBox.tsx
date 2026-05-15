@@ -1,5 +1,4 @@
 import { Search } from "lucide-react";
-import { useFilter } from "react-aria";
 import {
   ComboBox as AriaComboBox,
   Input,
@@ -7,45 +6,50 @@ import {
   ListBoxItem,
   Popover,
   type ComboBoxProps as AriaComboBoxProps,
-  type Key,
 } from "react-aria-components";
 import classes from "./comboBox.module.css";
 
 export type CityOption = {
   id: string;
   name: string;
+  latitude: number;
+  longitude: number;
+  timezone: string;
+  country: string;
+  admin1?: string;
 };
 
 type SearchComboBoxProps = Omit<
   AriaComboBoxProps<CityOption>,
-  "children" | "items" | "defaultItems" | "onSelectionChange"
+  "children" | "items" | "defaultItems" | "inputValue" | "onInputChange"
 > & {
   label?: string;
   placeholder?: string;
   items: CityOption[];
-  onSelectionChange?: (key: Key | null) => void;
+  value: string;
+  onInputChange: (value: string) => void;
 };
 
 export function SearchComboBox({
   label = "Search city",
   placeholder = "Search for a place...",
   items,
-  onSelectionChange,
+  value,
+  onInputChange,
   ...props
 }: SearchComboBoxProps) {
-  const { contains } = useFilter({ sensitivity: "base" });
-
   return (
     <AriaComboBox<CityOption>
       {...props}
       aria-label={label}
-      defaultItems={items}
-      defaultFilter={contains}
-      onSelectionChange={onSelectionChange}
+      items={items}
+      inputValue={value}
+      onInputChange={onInputChange}
       className={classes["combo-box"]}
     >
       <div className={classes["input-wrapper"]}>
         <Search className={classes["search-icon"]} aria-hidden />
+
         <Input className={classes["input"]} placeholder={placeholder} />
       </div>
 
@@ -63,7 +67,9 @@ export function SearchComboBox({
                 ].join(" ")
               }
             >
-              {item.name}
+              <div className={classes["list-item-content"]}>
+                <span className={classes["city-name"]}>{item.name}</span>
+              </div>
             </ListBoxItem>
           )}
         </ListBox>
