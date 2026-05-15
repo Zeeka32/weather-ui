@@ -6,13 +6,33 @@
   background-color: var(--neutral_600);
   border-radius: 8px;
   padding: 8px 16px 8px 16px;
+  height: 240px;
   color: var(--neutral_0);
   gap: 10px;
+}
+@media (max-width: 1600px) {
+  .future-card-main {
+    padding: 8px 8px 8px 8px;
+  }
+}
+.future-card-main .future-card-header {
+  font-size: 24px;
 }
 .future-card-main .future-card-temp {
   display: flex;
   width: 100%;
   justify-content: space-between;
+  font-size: 20px;
+}
+@media (max-width: 1600px) {
+  .future-card-main .future-card-temp {
+    font-size: 16px;
+  }
+}
+@media (max-width: 1000px) {
+  .future-card-main .future-card-temp {
+    font-size: 12px;
+  }
 }
 .future-card-main .future-card-temp .low {
   color: var(--neutral_200);

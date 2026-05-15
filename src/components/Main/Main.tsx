@@ -1,7 +1,7 @@
 import { Button, type Key } from "react-aria-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SearchComboBox, type CityOption } from "../ui/ComboBox/ComboBox";
-import { useCountries } from "../../shared/api";
+import { useCountries, useWeather } from "../../shared/api";
 import { useDebounce } from "../../shared/hooks";
 import classes from "./main.module.css";
 import TodayCard from "../ui/TodayCard/TodayCard";
@@ -26,13 +26,39 @@ function mapCountriesToCityOptions(countries: any): CityOption[] {
 
 function Main() {
   const [query, setQuery] = useState("");
-  const { selectedCity, setSelectedCity } = useWeatherAppContext();
+  const [startSearch, setStartSearch] = useState(false);
+
+  const {
+    parsedData,
+    selectedCity,
+    setSelectedCity,
+    setRawWeatherData,
+    setWeatherCity,
+    units,
+  } = useWeatherAppContext();
+
+  const [cityCoordinates, setCityCoordinates] = useState({
+    latitude: 0,
+    longitude: 0,
+  });
 
   const debouncedQuery = useDebounce(query, 300);
 
   const { data: countries } = useCountries(debouncedQuery);
+  const { data: rawData, isLoading } = useWeather(
+    cityCoordinates.latitude,
+    cityCoordinates.longitude,
+  );
+
+  useEffect(() => {
+    if (!rawData) {
+      return;
+    }
+    setRawWeatherData(rawData);
+  }, [rawData]);
 
   const cityOptions = mapCountriesToCityOptions(countries);
+  const forecastCards = parsedData.dailyForecast.slice(0, 6);
 
   function handleSelectionChange(key: Key | null) {
     const selectedCity = cityOptions.find((city) => city.id === key);
@@ -41,6 +67,19 @@ function Main() {
       setQuery(selectedCity.name);
       setSelectedCity(selectedCity);
     }
+  }
+
+  function handleSearch() {
+    if (!selectedCity) {
+      return;
+    }
+
+    setCityCoordinates({
+      latitude: selectedCity.latitude,
+      longitude: selectedCity.longitude,
+    });
+    setStartSearch(true);
+    setWeatherCity(selectedCity);
   }
 
   return (
@@ -62,53 +101,77 @@ function Main() {
           placeholder="Search for a place..."
         />
 
-        <Button className={classes["search-button"]} isDisabled={!selectedCity}>
+        <Button
+          className={classes["search-button"]}
+          isDisabled={!selectedCity}
+          onClick={handleSearch}
+        >
           Search
         </Button>
       </div>
 
-      <div className={classes["main-content"]}>
-        <div className={classes["content-left"]}>
-          <TodayCard
-            header="Berlin"
-            body="Tuesday"
-            temperature={20}
-            weatherType="snow"
-          />
+      {startSearch && (
+        <div className={classes["main-content"]}>
+          <div className={classes["content-left"]}>
+            <TodayCard todayData={parsedData} isLoading={isLoading} />
+            <div className={classes["info-cards"]}>
+              <InfoCard
+                header="Feels Like"
+                value={parsedData.today?.feelsLike}
+                isLoading={isLoading}
+              />
+              <InfoCard
+                header="Humidity"
+                value={parsedData.today?.humidity?.toFixed(0)}
+                unit="%"
+                isLoading={isLoading}
+              />
+              <InfoCard
+                header="Wind Speed"
+                value={parsedData.today?.windSpeed}
+                unit={units.windSpeed}
+                isLoading={isLoading}
+              />
+              <InfoCard
+                header="Precipitation"
+                value={parsedData.today?.precipitation}
+                unit={units.precipitation}
+                isLoading={isLoading}
+              />
+            </div>
 
-          <div className={classes["info-cards"]}>
-            <InfoCard header="Feels Like" value={18} unit="°" />
-            <InfoCard header="Humidity" value={60} unit="%" />
-            <InfoCard header="Wind Speed" value={10} unit="km/h" />
-            <InfoCard header="Precipitation" value={5} unit="mm" />
+            <h2>Daily Forecast</h2>
+
+            <div className={classes["future-cards"]}>
+              {forecastCards.length > 0
+                ? forecastCards.map((day) => (
+                    <FutureCard
+                      key={day.date}
+                      text={day.day}
+                      low={day.low}
+                      high={day.high}
+                      weatherType={day.weatherType}
+                      isLoading={isLoading}
+                    />
+                  ))
+                : Array.from({ length: 6 }).map((_, index) => (
+                    <FutureCard
+                      key={index}
+                      text="--"
+                      low="--"
+                      high="--"
+                      weatherType="sunny"
+                      isLoading={isLoading}
+                    />
+                  ))}
+            </div>
           </div>
 
-          <h2>Daily Forecast</h2>
-
-          <div className={classes["future-cards"]}>
-            <FutureCard text="Tue" low={12} high={20} weatherType="sunny" />
-            <FutureCard
-              text="Wed"
-              low={10}
-              high={18}
-              weatherType="partlyCloudy"
-            />
-            <FutureCard text="Thu" low={8} high={15} weatherType="rain" />
-            <FutureCard text="Fri" low={5} high={12} weatherType="snow" />
-            <FutureCard
-              text="Sat"
-              low={7}
-              high={14}
-              weatherType="partlyCloudy"
-            />
-            <FutureCard text="Sun" low={9} high={17} weatherType="sunny" />
+          <div className={classes["content-right"]}>
+            <HourlyForecast />
           </div>
         </div>
-
-        <div className={classes["content-right"]}>
-          <HourlyForecast />
-        </div>
-      </div>
+      )}
     </div>
   );
 }

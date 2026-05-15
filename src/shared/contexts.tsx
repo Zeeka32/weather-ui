@@ -31,8 +31,8 @@ type OpenMeteoData = any;
 export type TodayWeather = {
   location: string;
   date: string;
-  temperature: number;
-  feelsLike: number;
+  temperature: string;
+  feelsLike: string;
   humidity: number;
   windSpeed: number;
   precipitation: number;
@@ -74,6 +74,9 @@ type WeatherAppContextType = {
 
   selectedCity: CityOption | null;
   setSelectedCity: (city: CityOption | null) => void;
+
+  weatherCity: CityOption | null;
+  setWeatherCity: (city: CityOption | null) => void;
 };
 
 const defaultUnits: Units = {
@@ -91,6 +94,7 @@ export function WeatherAppProvider({ children }: { children: ReactNode }) {
     null,
   );
   const [selectedCity, setSelectedCity] = useState<CityOption | null>(null);
+  const [weatherCity, setWeatherCity] = useState<CityOption | null>(null);
 
   useEffect(() => {
     if (
@@ -130,8 +134,8 @@ export function WeatherAppProvider({ children }: { children: ReactNode }) {
   }
 
   const parsedData = useMemo(() => {
-    return parseWeatherData(rawWeatherData, selectedCity, units);
-  }, [rawWeatherData, selectedCity, units]);
+    return parseWeatherData(rawWeatherData, weatherCity, units);
+  }, [rawWeatherData, weatherCity, units]);
 
   return (
     <WeatherAppContext
@@ -145,6 +149,8 @@ export function WeatherAppProvider({ children }: { children: ReactNode }) {
         parsedData,
         selectedCity,
         setSelectedCity,
+        weatherCity,
+        setWeatherCity,
       }}
     >
       {children}
@@ -247,10 +253,10 @@ function parseHourlyForecast(
 
 function convertTemperature(value: number, unit: Units["temperature"]) {
   if (unit === "fahrenheit") {
-    return Math.round((value * 9) / 5 + 32);
+    return `${Math.round((value * 9) / 5 + 32)}°F`;
   }
 
-  return Math.round(value);
+  return `${Math.round(value)}°C`;
 }
 
 function convertWindSpeed(value: number, unit: Units["windSpeed"]) {

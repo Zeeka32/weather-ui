@@ -20,17 +20,21 @@ const meta = {
       control: "text",
     },
     low: {
-      control: "number",
+      control: "text",
     },
     high: {
-      control: "number",
+      control: "text",
+    },
+    isLoading: {
+      control: "boolean",
     },
   },
   args: {
     weatherType: "sunny",
     text: "Today",
-    low: 19,
-    high: 28,
+    low: "19°C",
+    high: "28°C",
+    isLoading: false,
   },
 } satisfies Meta<typeof FutureCard>;
 
@@ -40,12 +44,22 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
+export const Loading: Story = {
+  args: {
+    isLoading: true,
+    weatherType: "sunny",
+    text: "--",
+    low: "--",
+    high: "--",
+  },
+};
+
 export const Sunny: Story = {
   args: {
     weatherType: "sunny",
     text: "Today",
-    low: 19,
-    high: 28,
+    low: "19°C",
+    high: "28°C",
   },
 };
 
@@ -53,8 +67,8 @@ export const Drizzle: Story = {
   args: {
     weatherType: "drizzle",
     text: "Monday",
-    low: 16,
-    high: 22,
+    low: "16°C",
+    high: "22°C",
   },
 };
 
@@ -62,8 +76,8 @@ export const Fog: Story = {
   args: {
     weatherType: "fog",
     text: "Tuesday",
-    low: 14,
-    high: 18,
+    low: "14°C",
+    high: "18°C",
   },
 };
 
@@ -71,8 +85,8 @@ export const Overcast: Story = {
   args: {
     weatherType: "overcast",
     text: "Wednesday",
-    low: 15,
-    high: 21,
+    low: "15°C",
+    high: "21°C",
   },
 };
 
@@ -80,8 +94,8 @@ export const PartlyCloudy: Story = {
   args: {
     weatherType: "partlyCloudy",
     text: "Thursday",
-    low: 18,
-    high: 25,
+    low: "18°C",
+    high: "25°C",
   },
 };
 
@@ -89,8 +103,8 @@ export const Rain: Story = {
   args: {
     weatherType: "rain",
     text: "Friday",
-    low: 13,
-    high: 19,
+    low: "13°C",
+    high: "19°C",
   },
 };
 
@@ -98,8 +112,8 @@ export const Storm: Story = {
   args: {
     weatherType: "storm",
     text: "Saturday",
-    low: 17,
-    high: 24,
+    low: "17°C",
+    high: "24°C",
   },
 };
 
@@ -107,8 +121,8 @@ export const Snow: Story = {
   args: {
     weatherType: "snow",
     text: "Sunday",
-    low: -8,
-    high: -2,
+    low: "-8°C",
+    high: "-2°C",
   },
 };
 
@@ -131,16 +145,55 @@ export const Stacked: Story = {
           maxWidth: "360px",
         }}
       >
-        <FutureCard weatherType="sunny" text="Today" low={19} high={28} />
+        <FutureCard weatherType="sunny" text="Today" low="19°C" high="28°C" />
         <FutureCard
           weatherType="partlyCloudy"
           text="Monday"
-          low={18}
-          high={25}
+          low="18°C"
+          high="25°C"
         />
-        <FutureCard weatherType="rain" text="Tuesday" low={13} high={19} />
-        <FutureCard weatherType="storm" text="Wednesday" low={17} high={24} />
-        <FutureCard weatherType="snow" text="Thursday" low={-8} high={-2} />
+        <FutureCard weatherType="rain" text="Tuesday" low="13°C" high="19°C" />
+        <FutureCard
+          weatherType="storm"
+          text="Wednesday"
+          low="17°C"
+          high="24°C"
+        />
+        <FutureCard weatherType="snow" text="Thursday" low="-8°C" high="-2°C" />
+      </div>
+    </main>
+  ),
+};
+
+export const LoadingStacked: Story = {
+  parameters: {
+    layout: "fullscreen",
+  },
+  render: () => (
+    <main
+      style={{
+        minHeight: "100vh",
+        background: "#07001f",
+        padding: "32px",
+      }}
+    >
+      <div
+        style={{
+          display: "grid",
+          gap: "16px",
+          maxWidth: "360px",
+        }}
+      >
+        {Array.from({ length: 6 }).map((_, index) => (
+          <FutureCard
+            key={index}
+            weatherType="sunny"
+            text="--"
+            low="--"
+            high="--"
+            isLoading
+          />
+        ))}
       </div>
     </main>
   ),
@@ -167,14 +220,55 @@ export const ResponsiveGrid: Story = {
           margin: "0 auto",
         }}
       >
-        <FutureCard weatherType="sunny" text="Today" low={19} high={28} />
-        <FutureCard weatherType="drizzle" text="Mon" low={16} high={22} />
-        <FutureCard weatherType="fog" text="Tue" low={14} high={18} />
-        <FutureCard weatherType="overcast" text="Wed" low={15} high={21} />
-        <FutureCard weatherType="partlyCloudy" text="Thu" low={18} high={25} />
-        <FutureCard weatherType="rain" text="Fri" low={13} high={19} />
-        <FutureCard weatherType="storm" text="Sat" low={17} high={24} />
-        <FutureCard weatherType="snow" text="Sun" low={-8} high={-2} />
+        <FutureCard weatherType="sunny" text="Today" low="19°C" high="28°C" />
+        <FutureCard weatherType="drizzle" text="Mon" low="16°C" high="22°C" />
+        <FutureCard weatherType="fog" text="Tue" low="14°C" high="18°C" />
+        <FutureCard weatherType="overcast" text="Wed" low="15°C" high="21°C" />
+        <FutureCard
+          weatherType="partlyCloudy"
+          text="Thu"
+          low="18°C"
+          high="25°C"
+        />
+        <FutureCard weatherType="rain" text="Fri" low="13°C" high="19°C" />
+        <FutureCard weatherType="storm" text="Sat" low="17°C" high="24°C" />
+        <FutureCard weatherType="snow" text="Sun" low="-8°C" high="-2°C" />
+      </div>
+    </main>
+  ),
+};
+
+export const LoadingGrid: Story = {
+  parameters: {
+    layout: "fullscreen",
+  },
+  render: () => (
+    <main
+      style={{
+        minHeight: "100vh",
+        background: "#07001f",
+        padding: "32px",
+      }}
+    >
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))",
+          gap: "16px",
+          maxWidth: "900px",
+          margin: "0 auto",
+        }}
+      >
+        {Array.from({ length: 6 }).map((_, index) => (
+          <FutureCard
+            key={index}
+            weatherType="sunny"
+            text="--"
+            low="--"
+            high="--"
+            isLoading
+          />
+        ))}
       </div>
     </main>
   ),
@@ -199,15 +293,20 @@ export const MobileStacked: Story = {
           gap: "12px",
         }}
       >
-        <FutureCard weatherType="sunny" text="Today" low={19} high={28} />
+        <FutureCard weatherType="sunny" text="Today" low="19°C" high="28°C" />
         <FutureCard
           weatherType="partlyCloudy"
           text="Monday"
-          low={18}
-          high={25}
+          low="18°C"
+          high="25°C"
         />
-        <FutureCard weatherType="rain" text="Tuesday" low={13} high={19} />
-        <FutureCard weatherType="storm" text="Wednesday" low={17} high={24} />
+        <FutureCard weatherType="rain" text="Tuesday" low="13°C" high="19°C" />
+        <FutureCard
+          weatherType="storm"
+          text="Wednesday"
+          low="17°C"
+          high="24°C"
+        />
       </div>
     </main>
   ),
@@ -217,8 +316,8 @@ export const LongText: Story = {
   args: {
     weatherType: "partlyCloudy",
     text: "Wednesday Afternoon",
-    low: 18,
-    high: 25,
+    low: "18°C",
+    high: "25°C",
   },
 };
 
@@ -226,7 +325,7 @@ export const NegativeTemperatures: Story = {
   args: {
     weatherType: "snow",
     text: "Sunday",
-    low: -12,
-    high: -4,
+    low: "-12°C",
+    high: "-4°C",
   },
 };

@@ -1,6 +1,45 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import TodayCard from "./TodayCard";
-import { weatherIcons, weatherIconOptions } from "../../../shared/weatherIcon";
+import type { ParsedWeatherData } from "../../../shared/contexts";
+
+type WeatherType =
+  | "sunny"
+  | "drizzle"
+  | "fog"
+  | "overcast"
+  | "partlyCloudy"
+  | "rain"
+  | "storm"
+  | "snow";
+
+function createTodayData({
+  location,
+  date,
+  temperature,
+  feelsLike,
+  weatherType,
+}: {
+  location: string;
+  date: string;
+  temperature: string;
+  feelsLike?: string;
+  weatherType: WeatherType;
+}): ParsedWeatherData {
+  return {
+    today: {
+      location,
+      date,
+      temperature,
+      weatherType,
+      feelsLike: feelsLike ?? temperature,
+      humidity: 60,
+      windSpeed: 10,
+      precipitation: 0,
+    },
+    dailyForecast: [],
+    hourlyForecast: [],
+  };
+}
 
 const meta = {
   title: "Components/TodayCard",
@@ -8,29 +47,15 @@ const meta = {
   parameters: {
     layout: "centered",
   },
-  argTypes: {
-    weatherType: {
-      control: "select",
-      options: weatherIconOptions,
-      labels: Object.fromEntries(
-        weatherIconOptions.map((key) => [key, weatherIcons[key].label]),
-      ),
-    },
-    header: {
-      control: "text",
-    },
-    body: {
-      control: "text",
-    },
-    temperature: {
-      control: "number",
-    },
-  },
   args: {
-    weatherType: "sunny",
-    header: "Berlin, Germany",
-    body: "Tuesday, 13 May",
-    temperature: 28,
+    todayData: createTodayData({
+      location: "Berlin, Germany",
+      date: "Tuesday, 13 May",
+      temperature: "28°C",
+      feelsLike: "26°C",
+      weatherType: "sunny",
+    }),
+    isLoading: false,
   },
 } satisfies Meta<typeof TodayCard>;
 
@@ -42,56 +67,122 @@ export const Sunny: Story = {};
 
 export const Drizzle: Story = {
   args: {
-    weatherType: "drizzle",
-    header: "London, United Kingdom",
-    temperature: 22,
+    todayData: createTodayData({
+      location: "London, United Kingdom",
+      date: "Tuesday, 13 May",
+      temperature: "22°C",
+      feelsLike: "20°C",
+      weatherType: "drizzle",
+    }),
   },
 };
 
 export const Fog: Story = {
   args: {
-    weatherType: "fog",
-    header: "San Francisco, United States",
-    temperature: 18,
+    todayData: createTodayData({
+      location: "San Francisco, United States",
+      date: "Tuesday, 13 May",
+      temperature: "18°C",
+      feelsLike: "17°C",
+      weatherType: "fog",
+    }),
   },
 };
 
 export const Overcast: Story = {
   args: {
-    weatherType: "overcast",
-    header: "Amsterdam, Netherlands",
-    temperature: 17,
+    todayData: createTodayData({
+      location: "Amsterdam, Netherlands",
+      date: "Tuesday, 13 May",
+      temperature: "17°C",
+      feelsLike: "15°C",
+      weatherType: "overcast",
+    }),
   },
 };
 
 export const PartlyCloudy: Story = {
   args: {
-    weatherType: "partlyCloudy",
-    header: "Paris, France",
-    temperature: 21,
+    todayData: createTodayData({
+      location: "Paris, France",
+      date: "Tuesday, 13 May",
+      temperature: "21°C",
+      feelsLike: "20°C",
+      weatherType: "partlyCloudy",
+    }),
   },
 };
 
 export const Rain: Story = {
   args: {
-    weatherType: "rain",
-    header: "Manchester, United Kingdom",
-    temperature: 14,
+    todayData: createTodayData({
+      location: "Manchester, United Kingdom",
+      date: "Tuesday, 13 May",
+      temperature: "14°C",
+      feelsLike: "12°C",
+      weatherType: "rain",
+    }),
   },
 };
 
 export const Storm: Story = {
   args: {
-    weatherType: "storm",
-    header: "Miami, United States",
-    temperature: 26,
+    todayData: createTodayData({
+      location: "Miami, United States",
+      date: "Tuesday, 13 May",
+      temperature: "26°C",
+      feelsLike: "28°C",
+      weatherType: "storm",
+    }),
   },
 };
 
 export const Snow: Story = {
   args: {
-    weatherType: "snow",
-    header: "Oslo, Norway",
-    temperature: -5,
+    todayData: createTodayData({
+      location: "Oslo, Norway",
+      date: "Tuesday, 13 May",
+      temperature: "-5°C",
+      feelsLike: "-8°C",
+      weatherType: "snow",
+    }),
+  },
+};
+
+export const Fahrenheit: Story = {
+  args: {
+    todayData: createTodayData({
+      location: "New York, United States",
+      date: "Tuesday, 13 May",
+      temperature: "72°F",
+      feelsLike: "70°F",
+      weatherType: "partlyCloudy",
+    }),
+  },
+};
+
+export const Loading: Story = {
+  args: {
+    isLoading: true,
+    todayData: null,
+  },
+};
+
+export const Empty: Story = {
+  args: {
+    isLoading: false,
+    todayData: null,
+  },
+};
+
+export const LongLocation: Story = {
+  args: {
+    todayData: createTodayData({
+      location: "San Francisco, California, United States",
+      date: "Wednesday, 14 May",
+      temperature: "21°C",
+      feelsLike: "19°C",
+      weatherType: "partlyCloudy",
+    }),
   },
 };
