@@ -38,7 +38,7 @@ export function SearchComboBox({
   onInputChange,
   ...props
 }: SearchComboBoxProps) {
-  const shouldShowSuggestions = value.trim().length >= 3;
+  const shouldShowSuggestions = value.trim().length >= 2;
   return (
     <AriaComboBox<CityOption>
       {...props}

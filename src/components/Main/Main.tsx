@@ -44,8 +44,15 @@ function Main() {
 
   const debouncedQuery = useDebounce(query, 300);
 
-  const { data: countries, isError: isSearchError } =
-    useCountries(debouncedQuery);
+  const {
+    data: countries,
+    isError: isSearchError,
+    isLoading: isSearchLoading,
+    isFetching: isSearchFetching,
+    isPaused: isSearchPaused,
+    isSuccess: isSearchSuccess,
+  } = useCountries(debouncedQuery);
+
   const {
     data: rawData,
     isLoading,
@@ -65,24 +72,45 @@ function Main() {
 
   const previousCityOptionsRef = useRef<CityOption[]>([]);
 
+  const mappedCityOptions = useMemo(() => {
+    return mapCountriesToCityOptions(countries);
+  }, [countries]);
+
+  const normalizedQuery = query.trim();
+  const normalizedDebouncedQuery = debouncedQuery.trim();
+
+  const hasSearchableQuery = normalizedQuery.length >= 2;
+
+  const isLatestSearchResult = normalizedQuery === normalizedDebouncedQuery;
+
+  const hasSearchAttempted =
+    hasSearchableQuery && isLatestSearchResult && isSearchSuccess;
+
+  const hasNoSearchResults =
+    hasSearchAttempted && mappedCityOptions.length === 0;
+
   const cityOptions = useMemo(() => {
-    if (query.trim().length < 2) {
+    if (!hasSearchableQuery) {
       previousCityOptionsRef.current = [];
       return [];
     }
 
-    const mappedOptions = mapCountriesToCityOptions(countries);
+    if (mappedCityOptions.length > 0) {
+      previousCityOptionsRef.current = mappedCityOptions;
+      return mappedCityOptions;
+    }
 
-    if (mappedOptions.length > 0) {
-      previousCityOptionsRef.current = mappedOptions;
-      return mappedOptions;
+    if (hasNoSearchResults) {
+      previousCityOptionsRef.current = [];
+      return [];
     }
 
     return previousCityOptionsRef.current;
-  }, [countries, query]);
+  }, [hasSearchableQuery, mappedCityOptions, hasNoSearchResults]);
 
   const forecastCards = parsedData.dailyForecast.slice(0, 6);
   const isWeatherBusy = isLoading || isFetching || isPaused;
+  const isSearchBusy = isSearchLoading || isSearchFetching || isSearchPaused;
 
   function handleSelectionChange(key: Key | null) {
     const selectedCity = cityOptions.find((city) => city.id === key);
@@ -216,6 +244,17 @@ function Main() {
           </p>
         </div>
       )}
+
+      {hasNoSearchResults &&
+        !isSearchBusy &&
+        !isSearchError &&
+        !selectedCity && (
+          <div className={classes["error-state"]}>
+            <div className={classes["error-text"]}>
+              No search results found!
+            </div>
+          </div>
+        )}
     </div>
   );
 }
