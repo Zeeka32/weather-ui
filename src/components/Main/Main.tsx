@@ -44,12 +44,15 @@ function Main() {
 
   const debouncedQuery = useDebounce(query, 300);
 
-  const { data: countries } = useCountries(debouncedQuery);
+  const { data: countries, isError: isSearchError } =
+    useCountries(debouncedQuery);
   const {
     data: rawData,
     isLoading,
     isFetching,
     isPaused,
+    isError: isWeatherError,
+    refetch,
   } = useWeather(cityCoordinates.latitude, cityCoordinates.longitude);
 
   useEffect(() => {
@@ -75,6 +78,14 @@ function Main() {
 
   function handleSearch() {
     if (!selectedCity) {
+      return;
+    }
+    const isSameCity =
+      cityCoordinates.latitude === selectedCity.latitude &&
+      cityCoordinates.longitude === selectedCity.longitude;
+
+    if (isSameCity) {
+      refetch();
       return;
     }
 
@@ -113,33 +124,36 @@ function Main() {
         </Button>
       </div>
 
-      {startSearch && (
+      {startSearch && !isWeatherError && !isSearchError && (
         <div className={classes["main-content"]}>
           <div className={classes["content-left"]}>
             <TodayCard todayData={parsedData} isLoading={isWeatherBusy} />
             <div className={classes["info-cards"]}>
               <InfoCard
                 header="Feels Like"
-                value={parsedData.today?.feelsLike}
-                isLoading={isWeatherBusy}
+                value={parsedData.today?.feelsLike ?? "--"}
+                isLoading={isLoading}
               />
+
               <InfoCard
                 header="Humidity"
-                value={parsedData.today?.humidity?.toFixed(0)}
+                value={parsedData.today?.humidity?.toFixed(0) ?? "--"}
                 unit="%"
-                isLoading={isWeatherBusy}
+                isLoading={isLoading}
               />
+
               <InfoCard
                 header="Wind Speed"
-                value={parsedData.today?.windSpeed}
+                value={parsedData.today?.windSpeed ?? "--"}
                 unit={units.windSpeed}
-                isLoading={isWeatherBusy}
+                isLoading={isLoading}
               />
+
               <InfoCard
                 header="Precipitation"
-                value={parsedData.today?.precipitation}
+                value={parsedData.today?.precipitation ?? "--"}
                 unit={units.precipitation}
-                isLoading={isWeatherBusy}
+                isLoading={isLoading}
               />
             </div>
 
@@ -173,6 +187,16 @@ function Main() {
           <div className={classes["content-right"]}>
             <HourlyForecast parsedData={parsedData} isLoading={isWeatherBusy} />
           </div>
+        </div>
+      )}
+      {(isWeatherError || isSearchError) && (
+        <div className={classes["error-state"]}>
+          <img src="/assets/images/icon-error.svg" width={40} height={40} />
+          <div className={classes["error-text"]}>Something went wrong</div>
+          <p>
+            We couldn't connect to the server (API error). Please try again in a
+            few moments
+          </p>
         </div>
       )}
     </div>

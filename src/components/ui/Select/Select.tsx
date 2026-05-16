@@ -26,7 +26,7 @@ type SelectProps = {
 
 function Select({
   label,
-  placeholder = "Select an option",
+  placeholder = "--",
   items,
   defaultSelectedKey,
   selectedKey,

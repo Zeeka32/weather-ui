@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { UnitsDropdown } from "./UnitsDropdown";
+import { WeatherAppProvider } from "../../../shared/contexts";
 
 const meta = {
   title: "Components/UnitsDropdown",
@@ -10,7 +11,9 @@ const meta = {
   decorators: [
     (Story) => (
       <main className="min-h-screen bg-[#07001f] p-10">
-        <Story />
+        <WeatherAppProvider>
+          <Story />
+        </WeatherAppProvider>
       </main>
     ),
   ],
@@ -41,7 +44,9 @@ export const OnWhiteBackground: Story = {
   decorators: [
     (Story) => (
       <main className="min-h-screen bg-[#ffffff] p-10">
-        <Story />
+        <WeatherAppProvider>
+          <Story />
+        </WeatherAppProvider>
       </main>
     ),
   ],
@@ -59,7 +64,9 @@ export const InNavbar: Story = {
           />
 
           <div className="flex items-center gap-3">
-            <Story />
+            <WeatherAppProvider>
+              <Story />
+            </WeatherAppProvider>
           </div>
         </nav>
       </main>
@@ -71,7 +78,9 @@ export const MobileWidth: Story = {
   decorators: [
     (Story) => (
       <main className="flex justify-end min-h-screen w-93.75 bg-[#100044] p-4 ">
-        <Story />
+        <WeatherAppProvider>
+          <Story />
+        </WeatherAppProvider>
       </main>
     ),
   ],
