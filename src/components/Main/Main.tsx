@@ -248,7 +248,8 @@ function Main() {
       {hasNoSearchResults &&
         !isSearchBusy &&
         !isSearchError &&
-        !selectedCity && (
+        !selectedCity &&
+        !startSearch && (
           <div className={classes["error-state"]}>
             <div className={classes["error-text"]}>
               No search results found!
