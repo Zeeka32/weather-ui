@@ -1,5 +1,5 @@
 import { Button, type Key } from "react-aria-components";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { SearchComboBox, type CityOption } from "../ui/ComboBox/ComboBox";
 import { useCountries, useWeather } from "../../shared/api";
 import { useDebounce } from "../../shared/hooks";
@@ -63,7 +63,19 @@ function Main() {
     setWeatherCity(selectedCity);
   }, [rawData]);
 
-  const cityOptions = mapCountriesToCityOptions(countries);
+  const previousCityOptionsRef = useRef<CityOption[]>([]);
+
+  const cityOptions = useMemo(() => {
+    const mappedOptions = mapCountriesToCityOptions(countries);
+
+    if (mappedOptions.length > 0) {
+      previousCityOptionsRef.current = mappedOptions;
+      return mappedOptions;
+    }
+
+    return previousCityOptionsRef.current;
+  }, [countries]);
+
   const forecastCards = parsedData.dailyForecast.slice(0, 6);
   const isWeatherBusy = isLoading || isFetching || isPaused;
 
