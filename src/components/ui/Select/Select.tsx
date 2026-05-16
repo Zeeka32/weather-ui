@@ -10,7 +10,7 @@ import {
 import classes from "./select.module.css";
 import { ChevronDown } from "lucide-react";
 
-type SelectOption = {
+export type SelectOption = {
   id: string;
   label: string;
 };
@@ -20,21 +20,24 @@ type SelectProps = {
   placeholder?: string;
   items: SelectOption[];
   defaultSelectedKey?: Key;
+  selectedKey?: Key;
   onSelectionChange?: (key: Key | null) => void;
 };
 
 function Select({
   label,
-  placeholder = "Select a day",
+  placeholder = "Select an option",
   items,
   defaultSelectedKey,
+  selectedKey,
   onSelectionChange,
 }: SelectProps) {
   return (
     <AriaSelect
       aria-label={label}
-      defaultValue={defaultSelectedKey}
-      onChange={onSelectionChange}
+      defaultSelectedKey={defaultSelectedKey}
+      selectedKey={selectedKey}
+      onSelectionChange={onSelectionChange}
       className={classes["select"]}
     >
       <Button className={classes["button"]}>

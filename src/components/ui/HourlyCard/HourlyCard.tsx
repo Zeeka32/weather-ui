@@ -4,7 +4,7 @@ import classes from "./hourlyCard.module.css";
 type HourlyCardProps = {
   weatherType: WeatherIconKey;
   hour: string;
-  temp: number;
+  temp: string;
 };
 
 function HourlyCard({ weatherType, hour, temp }: HourlyCardProps) {
@@ -16,7 +16,7 @@ function HourlyCard({ weatherType, hour, temp }: HourlyCardProps) {
         <img src={icon.src} alt={icon.alt} width={45} height={45} />
         <span>{hour}</span>
       </div>
-      <div className={classes["temp"]}>{temp}°</div>
+      <div className={classes["temp"]}>{temp}</div>
     </div>
   );
 }

@@ -60,6 +60,8 @@ function Main() {
   const cityOptions = mapCountriesToCityOptions(countries);
   const forecastCards = parsedData.dailyForecast.slice(0, 6);
 
+  console.log(parsedData);
+
   function handleSelectionChange(key: Key | null) {
     const selectedCity = cityOptions.find((city) => city.id === key);
 
@@ -168,7 +170,7 @@ function Main() {
           </div>
 
           <div className={classes["content-right"]}>
-            <HourlyForecast />
+            <HourlyForecast parsedData={parsedData} />
           </div>
         </div>
       )}

@@ -50,14 +50,20 @@ export type DailyForecastItem = {
 export type HourlyForecastItem = {
   time: string;
   hour: string;
-  temp: number;
+  temp: string;
   weatherType: WeatherIconKey;
+};
+
+export type HourlyForecastDay = {
+  date: string;
+  day: string;
+  hours: HourlyForecastItem[];
 };
 
 export type ParsedWeatherData = {
   today: TodayWeather | null;
   dailyForecast: DailyForecastItem[];
-  hourlyForecast: HourlyForecastItem[];
+  hourlyForecast: HourlyForecastDay[];
 };
 
 type WeatherAppContextType = {
@@ -238,16 +244,40 @@ function parseDailyForecast(
 function parseHourlyForecast(
   data: OpenMeteoData,
   units: Units,
-): HourlyForecastItem[] {
+): HourlyForecastDay[] {
   const hourly = data.hourly;
 
   if (!hourly) return [];
 
-  return hourly.time.slice(0, 24).map((time: string, index: number) => ({
-    time,
-    hour: formatHour(time),
-    temp: convertTemperature(hourly.temperature_2m[index], units.temperature),
-    weatherType: mapWeatherCodeToIcon(hourly.weather_code[index]),
+  const times = hourly.time as Array<string | number | Date>;
+  const temperatures = hourly.temperature_2m as number[];
+  const weatherCodes = hourly.weather_code as number[];
+
+  const groupedByDate = times.reduce(
+    (acc, rawTime, index) => {
+      const time = normalizeTime(rawTime);
+      const date = time.split("T")[0];
+
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+
+      acc[date].push({
+        time,
+        hour: formatHour(time),
+        temp: convertTemperature(temperatures[index], units.temperature),
+        weatherType: mapWeatherCodeToIcon(weatherCodes[index]),
+      });
+
+      return acc;
+    },
+    {} as Record<string, HourlyForecastItem[]>,
+  );
+
+  return Object.entries(groupedByDate).map(([date, hours]) => ({
+    date,
+    day: formatWeekday(date),
+    hours,
   }));
 }
 
@@ -257,6 +287,14 @@ function convertTemperature(value: number, unit: Units["temperature"]) {
   }
 
   return `${Math.round(value)}°C`;
+}
+
+function normalizeTime(value: string | number | Date) {
+  if (typeof value === "string") {
+    return value;
+  }
+
+  return new Date(value).toISOString();
 }
 
 function convertWindSpeed(value: number, unit: Units["windSpeed"]) {
