@@ -38,6 +38,7 @@ export function SearchComboBox({
   onInputChange,
   ...props
 }: SearchComboBoxProps) {
+  const shouldShowSuggestions = value.trim().length >= 3;
   return (
     <AriaComboBox<CityOption>
       {...props}
@@ -46,6 +47,7 @@ export function SearchComboBox({
       inputValue={value}
       onInputChange={onInputChange}
       className={classes["combo-box"]}
+      allowsEmptyCollection={shouldShowSuggestions}
     >
       <div className={classes["input-wrapper"]}>
         <Search className={classes["search-icon"]} aria-hidden />
