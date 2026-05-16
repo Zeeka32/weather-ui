@@ -66,6 +66,11 @@ function Main() {
   const previousCityOptionsRef = useRef<CityOption[]>([]);
 
   const cityOptions = useMemo(() => {
+    if (query.trim().length < 2) {
+      previousCityOptionsRef.current = [];
+      return [];
+    }
+
     const mappedOptions = mapCountriesToCityOptions(countries);
 
     if (mappedOptions.length > 0) {
@@ -74,7 +79,7 @@ function Main() {
     }
 
     return previousCityOptionsRef.current;
-  }, [countries]);
+  }, [countries, query]);
 
   const forecastCards = parsedData.dailyForecast.slice(0, 6);
   const isWeatherBusy = isLoading || isFetching || isPaused;
