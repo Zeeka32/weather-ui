@@ -19,6 +19,7 @@ export const useCountries = (query: string = "") => {
   return useQuery({
     queryKey: ["countries", query],
     queryFn: () => fetchCountries(query),
+    staleTime: 1000 * 60 * 5,
     enabled: query.length > 0,
   });
 };
@@ -98,6 +99,7 @@ export const useWeather = (latitude: number, longitude: number) => {
   return useQuery({
     queryKey: ["weather", latitude, longitude],
     queryFn: () => fetchWeather(latitude, longitude),
+    staleTime: 1000 * 60 * 5,
     enabled: latitude !== 0 && longitude !== 0,
   });
 };

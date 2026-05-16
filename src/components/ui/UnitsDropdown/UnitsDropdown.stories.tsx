@@ -14,6 +14,7 @@ const meta = {
       </main>
     ),
   ],
+  tags: ["autodocs"],
   argTypes: {
     placement: {
       control: "select",

@@ -47,6 +47,7 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  tags: ["autodocs"],
   args: {
     todayData: createTodayData({
       location: "Berlin, Germany",

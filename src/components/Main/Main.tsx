@@ -45,22 +45,24 @@ function Main() {
   const debouncedQuery = useDebounce(query, 300);
 
   const { data: countries } = useCountries(debouncedQuery);
-  const { data: rawData, isLoading } = useWeather(
-    cityCoordinates.latitude,
-    cityCoordinates.longitude,
-  );
+  const {
+    data: rawData,
+    isLoading,
+    isFetching,
+    isPaused,
+  } = useWeather(cityCoordinates.latitude, cityCoordinates.longitude);
 
   useEffect(() => {
     if (!rawData) {
       return;
     }
     setRawWeatherData(rawData);
+    setWeatherCity(selectedCity);
   }, [rawData]);
 
   const cityOptions = mapCountriesToCityOptions(countries);
   const forecastCards = parsedData.dailyForecast.slice(0, 6);
-
-  console.log(parsedData);
+  const isWeatherBusy = isLoading || isFetching || isPaused;
 
   function handleSelectionChange(key: Key | null) {
     const selectedCity = cityOptions.find((city) => city.id === key);
@@ -81,7 +83,6 @@ function Main() {
       longitude: selectedCity.longitude,
     });
     setStartSearch(true);
-    setWeatherCity(selectedCity);
   }
 
   return (
@@ -115,30 +116,30 @@ function Main() {
       {startSearch && (
         <div className={classes["main-content"]}>
           <div className={classes["content-left"]}>
-            <TodayCard todayData={parsedData} isLoading={isLoading} />
+            <TodayCard todayData={parsedData} isLoading={isWeatherBusy} />
             <div className={classes["info-cards"]}>
               <InfoCard
                 header="Feels Like"
                 value={parsedData.today?.feelsLike}
-                isLoading={isLoading}
+                isLoading={isWeatherBusy}
               />
               <InfoCard
                 header="Humidity"
                 value={parsedData.today?.humidity?.toFixed(0)}
                 unit="%"
-                isLoading={isLoading}
+                isLoading={isWeatherBusy}
               />
               <InfoCard
                 header="Wind Speed"
                 value={parsedData.today?.windSpeed}
                 unit={units.windSpeed}
-                isLoading={isLoading}
+                isLoading={isWeatherBusy}
               />
               <InfoCard
                 header="Precipitation"
                 value={parsedData.today?.precipitation}
                 unit={units.precipitation}
-                isLoading={isLoading}
+                isLoading={isWeatherBusy}
               />
             </div>
 
@@ -153,7 +154,7 @@ function Main() {
                       low={day.low}
                       high={day.high}
                       weatherType={day.weatherType}
-                      isLoading={isLoading}
+                      isLoading={isWeatherBusy}
                     />
                   ))
                 : Array.from({ length: 6 }).map((_, index) => (
@@ -163,14 +164,14 @@ function Main() {
                       low="--"
                       high="--"
                       weatherType="sunny"
-                      isLoading={isLoading}
+                      isLoading={isWeatherBusy}
                     />
                   ))}
             </div>
           </div>
 
           <div className={classes["content-right"]}>
-            <HourlyForecast parsedData={parsedData} />
+            <HourlyForecast parsedData={parsedData} isLoading={isWeatherBusy} />
           </div>
         </div>
       )}

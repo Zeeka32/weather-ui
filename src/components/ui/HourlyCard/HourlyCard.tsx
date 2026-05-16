@@ -5,18 +5,23 @@ type HourlyCardProps = {
   weatherType: WeatherIconKey;
   hour: string;
   temp: string;
+  isLoading?: boolean;
 };
 
-function HourlyCard({ weatherType, hour, temp }: HourlyCardProps) {
+function HourlyCard({ weatherType, hour, temp, isLoading }: HourlyCardProps) {
   const icon = weatherIcons[weatherType];
 
   return (
     <div className={classes["hourly-card-main"]}>
-      <div className={classes["hourly-card-left"]}>
-        <img src={icon.src} alt={icon.alt} width={45} height={45} />
-        <span>{hour}</span>
-      </div>
-      <div className={classes["temp"]}>{temp}</div>
+      {!isLoading && (
+        <>
+          <div className={classes["hourly-card-left"]}>
+            <img src={icon.src} alt={icon.alt} width={45} height={45} />
+            <span>{hour}</span>
+          </div>
+          <div className={classes["temp"]}>{temp}</div>
+        </>
+      )}
     </div>
   );
 }

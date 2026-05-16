@@ -15,6 +15,7 @@ const unitOptions = [
 const meta = {
   title: "Components/Select",
   component: Select,
+  tags: ["autodocs"],
   parameters: {
     layout: "centered",
   },

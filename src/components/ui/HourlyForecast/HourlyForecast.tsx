@@ -7,9 +7,10 @@ import classes from "./hourlyForecast.module.css";
 
 type HourlyForecastProps = {
   parsedData: ParsedWeatherData;
+  isLoading?: boolean;
 };
 
-function HourlyForecast({ parsedData }: HourlyForecastProps) {
+function HourlyForecast({ parsedData, isLoading }: HourlyForecastProps) {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   const dayOptions = useMemo(() => {
@@ -60,20 +61,25 @@ function HourlyForecast({ parsedData }: HourlyForecastProps) {
       </div>
 
       <div className={classes["hourly-forecast-cards"]}>
-        {hourlyItems.length > 0 ? (
-          hourlyItems.map((hour) => (
-            <HourlyCard
-              key={hour.time}
-              weatherType={hour.weatherType}
-              hour={hour.hour}
-              temp={hour.temp}
-            />
-          ))
-        ) : (
-          <div className={classes["empty-state"]}>
-            No hourly forecast available.
-          </div>
-        )}
+        {hourlyItems.length > 0
+          ? hourlyItems.map((hour) => (
+              <HourlyCard
+                key={hour.time}
+                weatherType={hour.weatherType}
+                hour={hour.hour}
+                temp={hour.temp}
+                isLoading={isLoading}
+              />
+            ))
+          : Array.from({ length: 24 }).map((_, index) => (
+              <HourlyCard
+                key={index}
+                weatherType="sunny"
+                hour="--"
+                temp="--"
+                isLoading={isLoading}
+              />
+            ))}
       </div>
     </div>
   );
