@@ -9,6 +9,7 @@
   height: 240px;
   color: var(--neutral_0);
   gap: 10px;
+  min-width: 100px;
 
   @media (max-width: 1600px) {
     padding: 8px 8px 8px 8px;
