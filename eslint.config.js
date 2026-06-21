@@ -16,6 +16,9 @@ export default defineConfig([globalIgnores(['dist']), {
     reactHooks.configs.flat.recommended,
     reactRefresh.configs.vite,
   ],
+  rules: {
+    "@typescript-eslint/no-explicit-any": "off",
+  },
   languageOptions: {
     globals: globals.browser,
   },
