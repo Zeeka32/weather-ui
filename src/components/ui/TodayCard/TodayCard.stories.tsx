@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import TodayCard from "./TodayCard";
-import type { ParsedWeatherData } from "../../../shared/contexts";
+import type { ParsedWeatherData } from "../../../shared/types";
 
 type WeatherType =
   | "sunny"

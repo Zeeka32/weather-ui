@@ -1,4 +1,4 @@
-import type { WeatherIconKey } from "../shared/weatherIcon";
+import type { WeatherIconKey } from "./weatherIcon";
 
 export type OpenMeteoData = any;
 

@@ -120,10 +120,12 @@ const fetchWeather = async (latitude: number, longitude: number) => {
     return weatherData;
   } catch (error) {
     if (error instanceof Error) {
-      throw new Error(error.message || "Failed to fetch weather");
+      throw new Error(error.message || "Failed to fetch weather", {
+        cause: error,
+      });
     }
 
-    throw new Error("Failed to fetch weather");
+    throw new Error("Failed to fetch weather", { cause: error });
   }
 };
 

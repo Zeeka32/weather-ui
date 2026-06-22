@@ -9,7 +9,7 @@ import type {
   DailyForecastItem,
   HourlyForecastDay,
   HourlyForecastItem,
-} from "./utils";
+} from "./types";
 
 
 export function parseWeatherData(

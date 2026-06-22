@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import HourlyForecast from "./HourlyForecast";
-import type { ParsedWeatherData } from "../../../shared/contexts";
+import type { ParsedWeatherData } from "../../../shared/types";
 
 const mockParsedData: ParsedWeatherData = {
   today: {

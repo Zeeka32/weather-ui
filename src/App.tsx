@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./App.css";
 import Header from "./components/Header/Header";
 import Main from "./components/Main/Main";
-import { WeatherAppProvider } from "./shared/contexts";
+import { WeatherAppProvider } from "./shared/providers";
 
 const queryClient = new QueryClient();
 

@@ -1,5 +1,5 @@
 import { Button, type Key } from "react-aria-components";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { SearchComboBox, type CityOption } from "../ui/ComboBox/ComboBox";
 import { useCountries, useWeather } from "../../shared/api";
 import { useDebounce } from "../../shared/hooks";
@@ -68,9 +68,11 @@ function Main() {
     }
     setRawWeatherData(rawData);
     setWeatherCity(selectedCity);
-  }, [rawData]);
+  }, [rawData, setRawWeatherData, setWeatherCity, selectedCity]);
 
-  const previousCityOptionsRef = useRef<CityOption[]>([]);
+  const [previousCityOptions, setPreviousCityOptions] = useState<CityOption[]>(
+    [],
+  );
 
   const mappedCityOptions = useMemo(() => {
     return mapCountriesToCityOptions(countries);
@@ -89,24 +91,38 @@ function Main() {
   const hasNoSearchResults =
     hasSearchAttempted && mappedCityOptions.length === 0;
 
+  useEffect(() => {
+    if (!hasSearchableQuery || hasNoSearchResults) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setPreviousCityOptions([]);
+      return;
+    }
+
+    if (mappedCityOptions.length > 0) {
+      setPreviousCityOptions(mappedCityOptions);
+    }
+  }, [hasSearchableQuery, hasNoSearchResults, mappedCityOptions]);
+
   const cityOptions = useMemo(() => {
     if (!hasSearchableQuery) {
-      previousCityOptionsRef.current = [];
       return [];
     }
 
     if (mappedCityOptions.length > 0) {
-      previousCityOptionsRef.current = mappedCityOptions;
       return mappedCityOptions;
     }
 
     if (hasNoSearchResults) {
-      previousCityOptionsRef.current = [];
       return [];
     }
 
-    return previousCityOptionsRef.current;
-  }, [hasSearchableQuery, mappedCityOptions, hasNoSearchResults]);
+    return previousCityOptions;
+  }, [
+    hasSearchableQuery,
+    mappedCityOptions,
+    hasNoSearchResults,
+    previousCityOptions,
+  ]);
 
   const forecastCards = parsedData.dailyForecast.slice(0, 6);
   const isWeatherBusy = isLoading || isFetching || isPaused;

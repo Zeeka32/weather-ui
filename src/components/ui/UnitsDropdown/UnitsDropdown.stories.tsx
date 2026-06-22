@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { UnitsDropdown } from "./UnitsDropdown";
-import { WeatherAppProvider } from "../../../shared/contexts";
+import { WeatherAppProvider } from "../../../shared/providers";
 import { expect, userEvent, within } from "storybook/test";
 
 const meta = {

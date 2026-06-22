@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import type { Key } from "react-aria-components";
-import type { ParsedWeatherData } from "../../../shared/contexts";
+import type { ParsedWeatherData } from "../../../shared/types";
 import HourlyCard from "../HourlyCard/HourlyCard";
 import Select from "../Select/Select";
 import classes from "./hourlyForecast.module.css";
@@ -22,6 +22,7 @@ function HourlyForecast({ parsedData, isLoading }: HourlyForecastProps) {
 
   useEffect(() => {
     if (dayOptions.length === 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSelectedDate(null);
       return;
     }

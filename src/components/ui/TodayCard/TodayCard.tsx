@@ -1,4 +1,4 @@
-import type { ParsedWeatherData } from "../../../shared/contexts";
+import type { ParsedWeatherData } from "../../../shared/types";
 import { weatherIcons } from "../../../shared/weatherIcon";
 import classes from "./todayCard.module.css";
 
